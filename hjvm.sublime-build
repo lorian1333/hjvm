@@ -1,0 +1,12 @@
+{
+	"working_dir": "${project_path}",
+	"cmd": ["make"],
+
+	"variants":
+	[
+		{
+			"name": "Run",
+			"cmd": ["hjvm.exe", ]
+		}
+	]
+}

@@ -1,0 +1,24 @@
+{
+	"folders":
+	[
+
+		{
+			"path": "src",
+			"name": "Source"
+		},
+		{
+			"path": "include",
+			"name": "Includes"
+		},
+		{
+			"path": "java",
+			"name": "Java source"
+		},
+		{
+			"path": ".",
+			"name": "Other",
+			"file_exclude_patterns": ["*.pn*", "*.sublime*"],
+			"folder_exclude_patterns": ["*"]
+		} 
+	]
+}

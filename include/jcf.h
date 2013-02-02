@@ -100,12 +100,25 @@ typedef u8int J_boolean;
 /* Other types */
 // TODO: Check if this will work 
 typedef void* J_returnAddress;
-typedef void* J_reference;
+
+
+enum ReferenceTypes
+{
+     REF_Class = 0,
+     REF_Interface = 2,
+};
+
+typedef struct  
+{
+     u8int reference_type;
+     u16int component_type;
+     void* reference;
+} J_reference;
 
 typedef struct  {
 J_int length;
 u16int type;
-J_reference* array; 
+J_reference** array; 
 } J_reference_array;
 
 /* Null */
@@ -139,6 +152,6 @@ s8int HjvmExecute(JavaClassFile *jcf, char* methodname, u16int access_flags, u8i
 
 #define THROW_EXCEPTION(s) { err("Exception: java.lang.%s\n", s); return -E_EXCEPTION; }
 #define CODE_READ(b) { b = code->code[++i]; }
-#define CREATE_NEW_ARRAY(a,s) { a.length=s; a.type = 0; a.array = (J_reference*) malloc(s * sizeof(J_reference)); memset(a.array, 0, a.length); }
+#define CREATE_NEW_ARRAY(a,s) { a.length=s; a.type = 0; a.array = (J_reference**) malloc(s * sizeof(J_reference*)); memset(a.array, 0, a.length); }
 #define RETURN_FROM_METHOD(r) { returnvalue = r; free(stack); free(locals); return 0; }
 #endif

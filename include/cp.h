@@ -16,9 +16,9 @@ enum ConstantType {
 	CONSTANT_Double = 0x06,
 	CONSTANT_NameAndType = 0x0C,
 	CONSTANT_Utf8 = 0x01,
-     CONSTANT_MethodHandle = 0x0F,
-     CONSTANT_MethodType = 0x10,
-     CONSTANT_InvokeDynamic = 0x12,
+    CONSTANT_MethodHandle = 0x0F,
+    CONSTANT_MethodType = 0x10,
+    CONSTANT_InvokeDynamic = 0x12,
 };
 
 enum Method_types {

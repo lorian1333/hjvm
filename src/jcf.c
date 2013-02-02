@@ -327,6 +327,11 @@ static inline char* substring(char* source, u8int beginindex, u8int endindex)
 
 static JavaClassFile *g_jcf;
 
+static inline u8int check_if_compatible(u16int type1, u16int type2)
+{
+	//TODO: Make this work
+	return 1;
+}
 s8int HjvmExecuteCode(Code_attribute* code, Exceptions_attribute* exceptions, u8int argc, void **argv, void *returnvalue)
 {
 	/* Allocate and initialze the stack */
@@ -368,7 +373,7 @@ s8int HjvmExecuteCode(Code_attribute* code, Exceptions_attribute* exceptions, u8
 				STACK_POP(m1); //arrayref
 				if( ((J_reference_array*) m1)== J_null) THROW_EXCEPTION("NullPointerException");
 				if( (*((J_int*) m2)) >= ((J_reference_array*)m1)->length) THROW_EXCEPTION("ArrayIndexOutOfBoundsException");
-				STACK_PUSH( &(((J_reference_array*) m1)->array[*((J_int*) m2)]) ); //value
+				STACK_PUSH( &(((J_reference_array*) m1)->array[*((J_int*) m2)]->reference) ); //value
 				break;
 			}
 			case OPCODE_aastore: //throws NullPointerException, ArrayIndexOutOfBoundsException, ArrayStoreException
@@ -378,9 +383,9 @@ s8int HjvmExecuteCode(Code_attribute* code, Exceptions_attribute* exceptions, u8
 				STACK_POP(m1); //arrayref
 				if(((J_reference_array*) m1) == J_null) THROW_EXCEPTION("NullPointerException");
 				if( (*((J_int*) m2)) >= ((J_reference_array*)m1)->length) THROW_EXCEPTION("ArrayIndexOutOfBoundsException");
-				//TODO: Add ArrayStoreException
-				
-				((J_reference_array*) m1)->array[*((J_int*) m2)] = m3;
+
+				if( !check_if_compatible(((J_reference_array*) m1)->type, ((J_reference*) m3)->component_type )) THROW_EXCEPTION("ArrayStoreException");
+				((J_reference_array*) m1)->array[*((J_int*) m2)]->reference = m3;
 				break;
 			} 
 			case OPCODE_aconst_null:
@@ -547,7 +552,10 @@ s8int HjvmExecuteCode(Code_attribute* code, Exceptions_attribute* exceptions, u8
 				if(b3 == CONSTANT_Class) // a class or interface
 				{
 					m2 = (void*) ((CONSTANT_Utf8_info*) g_jcf->cp[MAKE_U16(((CONSTANT_Class_info*) g_jcf->cp[((b1 << 8) | b2)]->data)->name_index)]->data)->bytes; //classname
-					
+					if(m2[0]!='[') //if not an array
+					{
+
+					}
 				}
 				else if(b3 == CONSTANT_NameAndType) //
 				{
